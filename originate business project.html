@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORIGINATE — Smart AI Business Advisory & FinTech for Bharat</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root {
+    --primary-blue: #0b57d0;
+    --primary-dark: #00378a;
+    --accent-orange: #ff5e00;
+    --accent-coral: #ff7a29;
+    --bg-light: #f4f7fb;
+    --card-border: #e2e8f0;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; color: var(--text-main); overflow-x: hidden; }
+
+  /* Angel One Style Accents & Gradients */
+  .brand-gradient-text {
+    background: linear-gradient(135deg, #0b57d0 0%, #002d72 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .orange-gradient-text {
+    background: linear-gradient(135deg, #ff5e00 0%, #ff8c38 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .btn-primary-blue {
+    background: linear-gradient(135deg, #0b57d0 0%, #0947aa 100%);
+    color: #ffffff;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px rgba(11, 87, 208, 0.28);
+  }
+  .btn-primary-blue:hover {
+    background: linear-gradient(135deg, #0947aa 0%, #00378a 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(11, 87, 208, 0.38);
+  }
+  .btn-accent-orange {
+    background: linear-gradient(135deg, #ff5e00 0%, #f04e00 100%);
+    color: #ffffff;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px rgba(255, 94, 0, 0.3);
+  }
+  .btn-accent-orange:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(255, 94, 0, 0.4);
+  }
+
+  /* FinTech Cards */
+  .fin-card {
+    background: #ffffff;
+    border: 1px solid #e8eef6;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fin-card:hover {
+    transform: translateY(-4px);
+    border-color: #cbdcf8;
+    box-shadow: 0 12px 28px rgba(11, 87, 208, 0.09);
+  }
+
+  .nav-blur {
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid #edf2f9;
+  }
+
+  /* Chat Modal & App View */
+  #landing-page { transition: opacity 0.4s ease, transform 0.4s ease; }
+  #landing-page.hidden-page { opacity: 0; transform: scale(0.98); pointer-events: none; position: absolute; }
+  #chat-page { position: fixed; inset: 0; z-index: 100; background: #f8fafc; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
+  #chat-page.active { opacity: 1; pointer-events: all; }
+
+  /* Industry Pills */
+  .ind-pill {
+    background: #f1f5f9;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 10px 20px;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .ind-pill:hover, .ind-pill.active {
+    background: #eff6ff;
+    color: #0b57d0;
+    border-color: #bfdbfe;
+    box-shadow: 0 2px 8px rgba(11, 87, 208, 0.12);
+  }
+
+  /* Lang Pill */
+  .lang-pill {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    padding: 4px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    color: #475569;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .lang-pill:hover, .lang-pill.active {
+    border-color: #0b57d0;
+    background: #0b57d0;
+    color: #ffffff;
+  }
+
+  /* Chat UI */
+  .chat-msg { max-width: 82%; animation: msgIn 0.25s ease-out; }
+  .chat-msg.ai { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px 18px 18px 18px; color: #1e293b; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+  .chat-msg.user { background: #0b57d0; border-radius: 18px 4px 18px 18px; margin-left: auto; color: #ffffff; }
+  @keyframes msgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .quick-chip {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #0b57d0;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+  .quick-chip:hover {
+    background: #eff6ff;
+    border-color: #0b57d0;
+  }
+
+  .typing-dot { width: 6px; height: 6px; border-radius: 50%; background: #0b57d0; animation: blink 1.2s infinite; }
+  .typing-dot:nth-child(2) { animation-delay: .2s; }
+  .typing-dot:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
+
+  .hero-mesh {
+    background-color: #ffffff;
+    background-image: 
+      radial-gradient(at 10% 15%, rgba(11, 87, 208, 0.08) 0px, transparent 50%),
+      radial-gradient(at 90% 20%, rgba(255, 94, 0, 0.06) 0px, transparent 50%),
+      radial-gradient(at 50% 80%, rgba(11, 87, 208, 0.04) 0px, transparent 60%);
+  }
+</style>
+</head>
+<body class="bg-white">
+
+<!-- ====== LANDING PAGE ====== -->
+<div id="landing-page" class="w-full">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-slate-900 text-white text-xs py-2 px-4 text-center font-medium flex items-center justify-center gap-2">
+    <span class="bg-[#ff5e00] text-white text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full">New</span>
+    <span>Zero Paperwork MSME & Mudra Assistance with <strong>Gemini Multilingual Bot</strong></span>
+    <span class="hidden md:inline text-slate-400">| Serving all 640+ Districts of India</span>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="nav-blur sticky top-0 z-40 px-6 py-3.5 transition-all">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <a href="#" class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#0b57d0] to-[#2563eb] flex items-center justify-center text-white font-bold text-lg shadow-sm">
+            <i class="fa-solid fa-layer-group text-base"></i>
+          </div>
+          <span class="font-extrabold text-2xl tracking-tight text-[#002d72]">ORIGINATE</span>
+        </a>
+        <div class="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-600">
+          <a href="#services" class="hover:text-[#0b57d0] transition">Registrations & Tax</a>
+          <a href="#schemes" class="hover:text-[#0b57d0] transition">Govt Loans & Subsidies</a>
+          <a href="#industries" class="hover:text-[#0b57d0] transition">Sector Intelligence</a>
+          <a href="#calculator" class="hover:text-[#0b57d0] transition">Loan Eligibility</a>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="openChat()" class="btn-primary-blue px-5 py-2.5 rounded-lg text-sm flex items-center gap-2">
+          <i class="fa-solid fa-comments text-xs"></i>
+          <span>AI Advisory Counter</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section (Clean Angel One FinTech Layout) -->
+  <section class="hero-mesh pt-12 pb-20 px-6 border-b border-slate-100">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Content -->
+      <div class="lg:col-span-7 text-left space-y-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#0b57d0] text-xs font-bold tracking-wide">
+          <i class="fa-solid fa-bolt-lightning text-[#ff5e00]"></i>
+          <span>BUILT FOR BHARAT • MULTILINGUAL ADVISORY</span>
+        </div>
+        
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
+          Empowering Rural Dreams into <br>
+          <span class="brand-gradient-text">Profitable Enterprises.</span>
+        </h1>
+        
+        <p class="text-base sm:text-lg text-slate-600 max-w-xl font-normal leading-relaxed">
+          From business registration (UDYAM, GST, FSSAI) to MUDRA & PMEGP loan approvals — get step-by-step guidance in your mother tongue with our intelligent Gemini-powered platform.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+          <button onclick="openChat()" class="btn-accent-orange px-8 py-3.5 rounded-xl text-base flex items-center justify-center gap-2">
+            <span>Start Free Consultation</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </button>
+          <a href="#services" class="px-6 py-3.5 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-sm text-center transition">
+            Explore Services
+          </a>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-slate-100 max-w-lg">
+          <div>
+            <div class="text-2xl font-black text-slate-900">₹0</div>
+            <div class="text-xs text-slate-500 font-medium">Udyam Filing Cost</div>
+          </div>
+          <div>
+            <div class="text-2xl font-black text-[#0b57d0]">40+</div>
+            <div class="text-xs text-slate-500 font-medium">Govt Schemes Mapped</div>
+          </div>
+          <div>
+            <div class="text-2xl font-black text-[#ff5e00]">7+</div>
+            <div class="text-xs text-slate-500 font-medium">Indian Languages</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Card / Visual Showcase -->
+      <div class="lg:col-span-5 relative">
+        <div class="fin-card rounded-2xl p-6 relative bg-white border border-slate-200">
+          
+          <!-- Card Header -->
+          <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-blue-100 text-[#0b57d0] flex items-center justify-center font-bold">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-sm text-slate-900">Instant Business Check</h4>
+                <p class="text-xs text-slate-500">Live Eligibility Scanner</p>
+              </div>
+            </div>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-green-100 text-green-700">
+              ● Active
+            </span>
+          </div>
+
+          <!-- Feature Breakdown Items -->
+          <div class="space-y-4 py-5">
+            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="openChat()">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-file-invoice text-[#0b57d0] text-lg"></i>
+                <div>
+                  <div class="text-xs font-bold text-slate-800">UDYAM & MSME Portal</div>
+                  <div class="text-[11px] text-slate-500">Aadhaar + PAN Verification</div>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-[#0b57d0]">Instant &rarr;</span>
+            </div>
+
+            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-orange-50/50 transition cursor-pointer" onclick="openChat()">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-building-columns text-[#ff5e00] text-lg"></i>
+                <div>
+                  <div class="text-xs font-bold text-slate-800">MUDRA Loan (Shishu / Tarun)</div>
+                  <div class="text-[11px] text-slate-500">Up to ₹10 Lakhs Collateral-Free</div>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-[#ff5e00]">Apply &rarr;</span>
+            </div>
+
+            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-green-50/50 transition cursor-pointer" onclick="openChat()">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-utensils text-green-600 text-lg"></i>
+                <div>
+                  <div class="text-xs font-bold text-slate-800">FSSAI Food License</div>
+                  <div class="text-[11px] text-slate-500">Basic & State Dairy/Agro License</div>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-green-600">Check &rarr;</span>
+            </div>
+          </div>
+
+          <!-- Card Bottom Highlight -->
+          <div class="p-3.5 rounded-xl bg-gradient-to-r from-blue-900 to-[#002d72] text-white flex items-center justify-between">
+            <div>
+              <div class="text-[11px] text-blue-200 uppercase font-semibold tracking-wider">AI Discussion Counter</div>
+              <div class="text-xs font-bold">Ask queries in हिन्दी, தமிழ், मराठी...</div>
+            </div>
+            <button onclick="openChat()" class="px-3 py-1.5 rounded-lg bg-white text-[#0b57d0] text-xs font-bold hover:bg-blue-50 transition">
+              Open
+            </button>
+          </div>
+        </div>
+
+        <!-- Floating Decorative Element -->
+        <div class="hidden sm:flex absolute -bottom-6 -left-6 bg-white p-3.5 rounded-2xl shadow-lg border border-slate-100 items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-slate-900">35% PMEGP Subsidy</div>
+            <div class="text-[10px] text-slate-500">Mapped for Rural Sectors</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Services Grid (Angel One Product Style) -->
+  <section id="services" class="py-20 px-6 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="text-[#0b57d0] font-bold text-xs uppercase tracking-wider">COMPREHENSIVE SUITE</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">Everything You Need to Run Your Enterprise</h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-3">From regulatory clearances to financial architecture, structured effortlessly by AI.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Card 1 -->
+        <div class="fin-card rounded-2xl p-7 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#0b57d0] flex items-center justify-center text-xl mb-5">
+              <i class="fa-solid fa-scale-balanced"></i>
+            </div>
+            <h3 class="font-bold text-lg text-slate-900 mb-2">Legal Entity Structuring</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-4">Choose between Sole Proprietorship, Partnership, LLP, or Producer Companies with automated risk analysis.</p>
+          </div>
+          <button onclick="openChat()" class="text-xs font-bold text-[#0b57d0] hover:underline inline-flex items-center gap-1">
+            Learn More <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="fin-card rounded-2xl p-7 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-orange-50 text-[#ff5e00] flex items-center justify-center text-xl mb-5">
+              <i class="fa-solid fa-hand-holding-dollar"></i>
+            </div>
+            <h3 class="font-bold text-lg text-slate-900 mb-2">Government Subsidy & Loans</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-4">Direct mapping for MUDRA, PMEGP, PM Vishwakarma, Stand-Up India, and Agriculture Infrastructure Fund.</p>
+          </div>
+          <button onclick="openChat()" class="text-xs font-bold text-[#ff5e00] hover:underline inline-flex items-center gap-1">
+            Check Eligibility <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="fin-card rounded-2xl p-7 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl mb-5">
+              <i class="fa-solid fa-certificate"></i>
+            </div>
+            <h3 class="font-bold text-lg text-slate-900 mb-2">Mandatory Licensing (FSSAI/GST)</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-4">Automated document checklists, water testing lab linkages, AGMARK certification, and panchayat trade permits.</p>
+          </div>
+          <button onclick="openChat()" class="text-xs font-bold text-emerald-600 hover:underline inline-flex items-center gap-1">
+            Get License List <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="fin-card rounded-2xl p-7 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-5">
+              <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <h3 class="font-bold text-lg text-slate-900 mb-2">Smart Compliance Calendar</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-4">Never miss GSTR-1, GSTR-3B, TDS payments, or annual renewal dates with automated WhatsApp/SMS alerts.</p>
+          </div>
+          <button onclick="openChat()" class="text-xs font-bold text-indigo-600 hover:underline inline-flex items-center gap-1">
+            View Schedule <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="fin-card rounded-2xl p-7 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl mb-5">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <h3 class="font-bold text-lg text-slate-900 mb-2">Bank Project Report (DPR)</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-4">Generate bank-ready Detailed Project Reports with DSCR, Cash Flow, and Break-Even calculations in minutes.</p>
+          </div>
+          <button onclick="openChat()" class="text-xs font-bold text-purple-600 hover:underline inline-flex items-center gap-1">
+            Generate DPR <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          </button>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="fin-card rounded-2xl p-7 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl mb-5">
+              <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+            <h3 class="font-bold text-lg text-slate-900 mb-2">ONDC & Market Linkage</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-4">Direct integration with Open Network for Digital Commerce, GeM Government portal, and digital QR payments.</p>
+          </div>
+          <button onclick="openChat()" class="text-xs font-bold text-teal-600 hover:underline inline-flex items-center gap-1">
+            Connect Market <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Sector Focus Section -->
+  <section id="industries" class="py-20 px-6 bg-white">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-[#ff5e00] font-bold text-xs uppercase tracking-wider">SECTOR SPECIFIC ADVISORY</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">Specialized for Rural Industries</h2>
+      </div>
+
+      <!-- Sector Pills -->
+      <div class="flex flex-wrap justify-center gap-2.5 mb-10" id="ind-pills">
+        <button class="ind-pill active" data-ind="agriculture"><i class="fa-solid fa-wheat-awn mr-1.5"></i>Agriculture</button>
+        <button class="ind-pill" data-ind="dairy"><i class="fa-solid fa-cow mr-1.5"></i>Dairy</button>
+        <button class="ind-pill" data-ind="food"><i class="fa-solid fa-jar mr-1.5"></i>Food Processing</button>
+        <button class="ind-pill" data-ind="handicraft"><i class="fa-solid fa-palette mr-1.5"></i>Handicrafts</button>
+        <button class="ind-pill" data-ind="textile"><i class="fa-solid fa-shirt mr-1.5"></i>Textiles</button>
+        <button class="ind-pill" data-ind="poultry"><i class="fa-solid fa-egg mr-1.5"></i>Poultry</button>
+        <button class="ind-pill" data-ind="retail"><i class="fa-solid fa-store mr-1.5"></i>Retail</button>
+      </div>
+
+      <!-- Sector Details Box -->
+      <div id="ind-detail" class="bg-slate-50 border border-slate-200 rounded-2xl p-8 max-w-5xl mx-auto">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner (Clean FinTech Blue) -->
+  <section class="py-16 px-6 bg-[#002d72] text-white text-center relative overflow-hidden">
+    <div class="max-w-4xl mx-auto relative z-10">
+      <h2 class="text-3xl sm:text-5xl font-extrabold mb-4 tracking-tight">Ready to launch your business?</h2>
+      <p class="text-blue-200 text-base sm:text-lg mb-8 max-w-2xl mx-auto">
+        Get instant answers about licenses, loans, and legal structures with the Multilingual Gemini Bot.
+      </p>
+      <button onclick="openChat()" class="btn-accent-orange px-9 py-4 rounded-xl text-base font-bold inline-flex items-center gap-2 shadow-lg">
+        <i class="fa-solid fa-comments"></i>
+        <span>Open Discussion Counter Now</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Clean Footer -->
+  <footer class="bg-white border-t border-slate-200 py-10 px-6 text-sm text-slate-500">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 font-bold text-slate-800 text-base">
+        <div class="w-6 h-6 rounded bg-[#0b57d0] text-white flex items-center justify-center text-xs">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <span>ORIGINATE</span>
+      </div>
+      <div class="flex gap-6 text-xs">
+        <a href="#" class="hover:text-[#0b57d0]">Privacy Policy</a>
+        <a href="#" class="hover:text-[#0b57d0]">Terms of Advisory</a>
+        <a href="#" class="hover:text-[#0b57d0]">Help Desk</a>
+      </div>
+      <div class="text-xs text-slate-400">© 2026 ORIGINATE Advisory Services. Powered by Gemini Bot.</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ====== CHAT ADVISORY PAGE ====== -->
+<div id="chat-page" class="flex flex-col h-screen">
+  
+  <!-- Chat Header -->
+  <header class="flex-shrink-0 px-6 py-3.5 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <button onclick="closeChat()" class="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition" title="Back to Home">
+          <i class="fa-solid fa-arrow-left text-xs"></i>
+        </button>
+        <div class="w-8 h-8 rounded-lg bg-[#0b57d0] flex items-center justify-center text-white text-xs font-bold">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div>
+          <div class="font-extrabold text-sm text-slate-900 leading-tight">ORIGINATE ADVISORY COUNTER</div>
+          <div class="flex items-center gap-1.5 text-[11px] text-emerald-600 font-semibold">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Gemini Multilingual Bot Online
+          </div>
+        </div>
+      </div>
+
+      <!-- Language Switcher Bar -->
+      <div class="flex items-center gap-1 overflow-x-auto py-1" id="lang-selector">
+        <button class="lang-pill active" onclick="setLanguage('en')">English</button>
+        <button class="lang-pill" onclick="setLanguage('hi')">हिन्दी</button>
+        <button class="lang-pill" onclick="setLanguage('mr')">मराठी</button>
+        <button class="lang-pill" onclick="setLanguage('te')">తెలుగు</button>
+        <button class="lang-pill" onclick="setLanguage('ta')">தமிழ்</button>
+        <button class="lang-pill" onclick="setLanguage('bn')">বাংলা</button>
+        <button class="lang-pill" onclick="setLanguage('gu')">ગુજરાતી</button>
+        <button onclick="clearChat()" class="px-2.5 py-1 rounded-md border border-slate-200 text-xs text-slate-500 hover:bg-slate-100 transition ml-2">Clear</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Chat Messages Container -->
+  <main id="chat-messages" class="flex-1 overflow-y-auto px-6 py-6 bg-[#f8fafc]">
+    <div class="max-w-4xl mx-auto space-y-4" id="msg-container">
+      <!-- Injected by JavaScript -->
+    </div>
+  </main>
+
+  <!-- Quick Questions Bar -->
+  <div class="flex-shrink-0 px-6 py-2.5 bg-white border-t border-slate-200">
+    <div class="max-w-4xl mx-auto flex flex-wrap gap-2" id="quick-buttons-box">
+      <!-- Injected by JavaScript -->
+    </div>
+  </div>
+
+  <!-- Chat Input Bar -->
+  <div class="flex-shrink-0 px-6 py-3.5 bg-white border-t border-slate-200">
+    <div class="max-w-4xl mx-auto flex items-center gap-3">
+      <div class="flex-1 relative">
+        <input type="text" id="chat-input" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 pr-12 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0b57d0] focus:bg-white transition" placeholder="Ask your question in any language (e.g. How to get MUDRA loan?)..." onkeydown="handleInputKey(event)">
+        <button onclick="sendMessage()" class="absolute right-2 top-2 w-8 h-8 rounded-lg bg-[#0b57d0] text-white flex items-center justify-center hover:bg-[#00378a] transition">
+          <i class="fa-solid fa-paper-plane text-xs"></i>
+        </button>
+      </div>
+    </div>
+    <div class="text-center text-[10px] text-slate-400 mt-1.5">
+      AI provides structured advisory. Check with official portals (udyamregistration.gov.in, msme.gov.in) for legal verification.
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== JAVASCRIPT LOGIC ====== -->
+<script>
+/* ---- INDUSTRY DATA ---- */
+const industryData = {
+  agriculture: {
+    title: 'Agriculture & Agro-Processing',
+    icon: 'fa-wheat-awn',
+    items: [
+      { label: 'Key Registrations', value: 'APEDA registration for exports, NABARD refinance eligibility, State Agriculture Department licenses, Organic PGS-India certification.' },
+      { label: 'Financial Support', value: 'Kisan Credit Card (KCC up to ₹3L @ 4%), Agriculture Infrastructure Fund (3% interest subvention), NABARD subsidy schemes.' },
+      { label: 'Quality & Testing', value: 'Pesticide residue testing via NABL labs, Soil Health Card compliance, Seed Act certification.' },
+      { label: 'Market Access', value: 'e-NAM (National Agriculture Market), ONDC integration, APMC mandi direct onboarding.' }
+    ]
+  },
+  dairy: {
+    title: 'Dairy & Animal Husbandry',
+    icon: 'fa-cow',
+    items: [
+      { label: 'Key Registrations', value: 'FSSAI State/Central Registration for milk collection & chilling, State Milk Federation tie-up.' },
+      { label: 'Financial Support', value: 'Dairy Entrepreneurship Development Scheme (DEDS - 25-33% subsidy), Animal Husbandry Infrastructure Fund (AHIDF).' },
+      { label: 'Quality & Testing', value: 'Fat & SNF automated testing, Antibiotic residue zero-tolerance test, Milk chilling HACCP norms.' },
+      { label: 'Market Access', value: 'Cooperative milk unions (Amul, Nandini, Mother Dairy), B2B supply to sweet manufacturers.' }
+    ]
+  },
+  food: {
+    title: 'Food Processing & Packaged Goods',
+    icon: 'fa-jar',
+    items: [
+      { label: 'Key Registrations', value: 'FSSAI Manufacturing License, AGMARK for edible oils & spices, BIS certification for packaged water.' },
+      { label: 'Financial Support', value: 'PMFME Scheme (35% capital subsidy up to ₹10 Lakhs under ODOP), Mudra Tarun Loan.' },
+      { label: 'Quality & Testing', value: 'Shelf-life testing, Nutritional table lab analysis, Potable water microbial testing.' },
+      { label: 'Market Access', value: 'GeM portal for supply to govt canteens, ONDC retail network, Amazon Karigar.' }
+    ]
+  },
+  handicraft: {
+    title: 'Handicrafts & Artisan Enterprises',
+    icon: 'fa-palette',
+    items: [
+      { label: 'Key Registrations', value: 'Geographical Indication (GI) Tag, Pehchan Artisan Card from Ministry of Textiles, UDYAM.' },
+      { label: 'Financial Support', value: 'PM Vishwakarma Scheme (₹3 Lakh loan @ 5% interest + ₹15,000 tool kit incentive).' },
+      { label: 'Quality & Testing', value: 'Craft Mark verification, Eco-friendly non-toxic dye certification.' },
+      { label: 'Market Access', value: 'Tribes India, Dilli Haat direct booking, Export Promotion Council for Handicrafts (EPCH).' }
+    ]
+  },
+  textile: {
+    title: 'Textiles & Handlooms',
+    icon: 'fa-shirt',
+    items: [
+      { label: 'Key Registrations', value: 'Handloom Mark Registration, Silk Mark, GST (mandatory for interstate trade).' },
+      { label: 'Financial Support', value: 'Weaver Mudra Scheme, Amended Technology Upgradation Fund Scheme (ATUFS).' },
+      { label: 'Quality & Testing', value: 'Color fastness testing, BIS textile standards compliance.' },
+      { label: 'Market Access', value: 'National Handloom Development Corporation expos, Co-optex, Online marketplace listings.' }
+    ]
+  },
+  poultry: {
+    title: 'Poultry & Fisheries',
+    icon: 'fa-egg',
+    items: [
+      { label: 'Key Registrations', value: 'State Animal Husbandry NOC, Pollution Control Board Green Category Consent, FSSAI for meat/egg.' },
+      { label: 'Financial Support', value: 'PM Matsya Sampada Yojana (PMMSY - up to 40-60% subsidy), KCC for Animal Husbandry.' },
+      { label: 'Quality & Testing', value: 'Water quality index test for aquaculture, Bio-security audit protocols.' },
+      { label: 'Market Access', value: 'Local wet-market wholesale tie-ups, Cold-chain logistics network, Export via MPEDA.' }
+    ]
+  },
+  retail: {
+    title: 'Rural Retail & Distribution',
+    icon: 'fa-store',
+    items: [
+      { label: 'Key Registrations', value: 'Shop & Establishment Act (Gumasta), Panchayat Trade License, GST Registration.' },
+      { label: 'Financial Support', value: 'PM SVANidhi Scheme, Mudra Shishu/Kishore loans for working capital.' },
+      { label: 'Quality & Testing', value: 'Legal Metrology compliance (Weights & Measures stamping).' },
+      { label: 'Market Access', value: 'CSC (Common Service Center) micro-banking integration, UPI QR merchant setup.' }
+    ]
+  }
+};
+
+function renderIndustry(key) {
+  const data = industryData[key];
+  if (!data) return;
+  const el = document.getElementById('ind-detail');
+  el.innerHTML = `
+    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-200">
+      <div class="w-10 h-10 rounded-lg bg-blue-100 text-[#0b57d0] flex items-center justify-center text-lg">
+        <i class="fa-solid ${data.icon}"></i>
+      </div>
+      <div>
+        <h3 class="font-extrabold text-lg text-slate-900">${data.title}</h3>
+        <p class="text-xs text-slate-500">Government Policy & Compliance Roadmap</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      ${data.items.map(item => `
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-[#0b57d0] text-xs font-bold uppercase tracking-wider mb-1.5">${item.label}</div>
+          <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">${item.value}</p>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+document.querySelectorAll('.ind-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.ind-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderIndustry(btn.dataset.ind);
+  });
+});
+renderIndustry('agriculture');
+
+/* ---- MULTILINGUAL LOGIC & CHAT SYSTEM ---- */
+let currentLang = 'en';
+
+const langConfig = {
+  en: {
+    welcome: `Hello! Welcome to the **ORIGINATE Advisory Counter**.\nI am your intelligent business advisor powered by **Gemini Bot**.\n\nHow can I help you today?\n- **Business Registrations** (UDYAM, GST, FSSAI)\n- **Government Schemes & Loans** (MUDRA, PMEGP, PM Vishwakarma)\n- **Compliance Calendars & Permits**\n\nType your query or choose a quick option below.`,
+    suggestions: ['How to get MUDRA loan?', 'Steps for UDYAM registration', 'FSSAI License for food business', 'PMEGP Subsidy rules'],
+    quickButtons: [
+      { label: 'Start Business', text: 'How do I start a new business in my village?' },
+      { label: 'MUDRA Loan', text: 'How to apply for MUDRA loan?' },
+      { label: 'UDYAM MSME', text: 'What are the documents needed for UDYAM registration?' },
+      { label: 'FSSAI License', text: 'How to get FSSAI license for food business?' },
+      { label: 'Govt Subsidies', text: 'What government subsidies are available under PMEGP?' }
+    ]
+  },
+  hi: {
+    welcome: `नमस्ते! **ORIGINATE एडवाइजरी काउंटर** में आपका स्वागत है।\nमैं **Gemini Bot** द्वारा संचालित आपका बिज़नेस सलाहकार हूँ।\n\nमैं आपकी किस प्रकार सहायता कर सकता हूँ?\n- **व्यापार पंजीकरण** (उद्यम, GST, FSSAI फ़ूड लाइसेंस)\n- **सरकारी ऋण व सब्सिडी** (मुद्रा लोन, PMEGP, पीएम विश्वकर्मा)\n- **दस्तावेज़ और प्रोजेक्ट रिपोर्ट**\n\nकृपया अपना प्रश्न लिखें या नीचे दिए गए विकल्पों पर क्लिक करें।`,
+    suggestions: ['मुद्रा लोन कैसे लें?', 'उद्यम रजिस्ट्रेशन कैसे करें?', 'FSSAI लाइसेंस प्रक्रिया', 'PMEGP सब्सिडी के नियम'],
+    quickButtons: [
+      { label: 'नया बिज़नेस', text: 'नया व्यापार शुरू करने की पूरी प्रक्रिया क्या है?' },
+      { label: 'मुद्रा लोन', text: 'मुद्रा लोन के लिए कौन से दस्तावेज़ चाहिए?' },
+      { label: 'उद्यम रजिस्ट्रेशन', text: 'उद्यम रजिस्ट्रेशन कैसे करें?' },
+      { label: 'FSSAI लाइसेंस', text: 'खाद्य व्यापार हेतु FSSAI लाइसेंस कैसे प्राप्त करें?' },
+      { label: 'PMEGP सब्सिडी', text: 'PMEGP योजना में 35% सब्सिडी कैसे मिलती है?' }
+    ]
+  },
+  mr: {
+    welcome: `नमस्कार! **ORIGINATE सल्लागार केंद्रात** आपले स्वागत आहे.\nमी **Gemini Bot** द्वारे संचलित आपला व्यवसाय सल्लागार आहे.\n\nतुम्हाला कशाबद्दल माहिती हवी आहे?\n- **नोंदणी व परवाने** (उद्यम, GST, FSSAI)\n- **मुद्रा कर्ज व सरकारी योजना** (MUDRA, PMEGP)\n- **प्रकल्प अहवाल**`,
+    suggestions: ['मुद्रा कर्ज कसे मिळवावे?', 'उद्यम नोंदणी माहिती', 'अन्न व्यवसाय परवाना'],
+    quickButtons: [
+      { label: 'नवीन व्यवसाय', text: 'नवीन व्यवसाय सुरू करण्यासाठी काय करावे?' },
+      { label: 'मुद्रा कर्ज', text: 'मुद्रा कर्जासाठी पात्रता काय आहे?' },
+      { label: 'उद्यम नोंदणी', text: 'उद्यम नोंदणी कशी करावी?' }
+    ]
+  },
+  te: {
+    welcome: `నమస్కారం! **ORIGINATE సలహా కేంద్రానికి** స్వాగతం.\nనేను **Gemini Bot** చే నడిచే మీ వ్యాపార సలహాదారుని.\n\nమీరు ఏ సమాచారం తెలుసుకోవాలనుకుంటున్నారు?\n- **వ్యాపార నమోదులు** (ఉద్యమ్, జీఎస్టీ, FSSAI)\n- **ప్రభుత్వ రుణాలు & సబ్సిడీలు** (ముద్ర, PMEGP)`,
+    suggestions: ['ముద్ర లోన్ ఎలా పొందాలి?', 'ఉద్యమ్ రిజిస్ట్రేషన్ విధానం', 'FSSAI లైసెన్స్ వివరాలు'],
+    quickButtons: [
+      { label: 'కొత్త వ్యాపారం', text: 'కొత్త వ్యాపారం ఎలా ప్రారంభించాలి?' },
+      { label: 'ముద్ర లోన్', text: 'ముద్ర లోన్ ఎలా దరఖాస్తు చేసుకోవాలి?' }
+    ]
+  },
+  ta: {
+    welcome: `வணக்கம்! **ORIGINATE ஆலோசனை மையத்திற்கு** நல்வரவு.\nநான் **Gemini Bot** இயக்கும் வணிக ஆலோசகர்.\n\nஉங்களுக்கு என்ன உதவி தேவை?\n- **தொழில் பதிவு** (உத்யம், GST, FSSAI)\n- **அரசு கடனுதவி & மானியங்கள்** (முத்ரா, PMEGP)`,
+    suggestions: ['முத்ரா கடன் பெறுவது எப்படி?', 'உத்யம் பதிவு விவரங்கள்'],
+    quickButtons: [
+      { label: 'புதிய தொழில்', text: 'புதிய தொழில் தொடங்குவது எப்படி?' },
+      { label: 'முத்ரா கடன்', text: 'முத்ரா கடன் பெற என்ன செய்ய வேண்டும்?' }
+    ]
+  },
+  bn: {
+    welcome: `নমস্কার! **ORIGINATE পরামর্শ কেন্দ্রে** স্বাগতম।\nআমি **Gemini Bot** দ্বারা পরিচালিত ব্যবসায়িক উপদেষ্টা।\n\nআমি কিভাবে সাহায্য করতে পারি?\n- **ব্যবসার রেজিস্ট্রেশন** (উদ্যম, জিএসটি, FSSAI)\n- **সরকারি লোন ও ভর্তুকি** (মুদ্রা, PMEGP)`,
+    suggestions: ['মুদ্রা লোন কিভাবে পাব?', 'উদ্যম রেজিস্ট্রেশন নিয়ম'],
+    quickButtons: [
+      { label: 'নতুন ব্যবসা', text: 'নতুন ব্যবসা শুরু করার ধাপগুলো কি কি?' },
+      { label: 'মুদ্রা লোন', text: 'মুদ্রা লোনের জন্য কি কি নথি লাগবে?' }
+    ]
+  },
+  gu: {
+    welcome: `નમસ્તે! **ORIGINATE એડવાઇઝરી કાઉન્ટર** માં આપનું સ્વાગત છે.\nહું **Gemini Bot** આધારિત આપનો બિઝનેસ સલાહકાર છું.\n\nહું કેવી રીતે મદદ કરી શકું?\n- **બિઝનેસ નોંધણી** (ઉદ્યમ, GST, FSSAI)\n- **સરકારી લોન અને સબસિડી** (મુદ્રા લોન, PMEGP)`,
+    suggestions: ['મુદ્રા લોન કેવી રીતે મેળવવી?', 'ઉદ્યમ નોંધણી માહિતી'],
+    quickButtons: [
+      { label: 'નવો બિઝનેસ', text: 'નવો બિઝનેસ શરૂ કરવા માટે માર્ગદર્શન આપો' },
+      { label: 'મુદ્રા લોન', text: 'મુદ્રા લોન માટે કયા દસ્તાવેજો જોઈએ?' }
+    ]
+  }
+};
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-pill').forEach(pill => {
+    pill.classList.remove('active');
+  });
+  event.target.classList.add('active');
+  renderQuickButtons();
+  clearChat();
+}
+
+function renderQuickButtons() {
+  const box = document.getElementById('quick-buttons-box');
+  const cfg = langConfig[currentLang] || langConfig.en;
+  box.innerHTML = cfg.quickButtons.map(btn => `
+    <button class="quick-chip" onclick="sendQuick('${btn.text}')">${btn.label}</button>
+  `).join('');
+}
+
+function openChat() {
+  document.getElementById('landing-page').classList.add('hidden-page');
+  document.getElementById('chat-page').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  renderQuickButtons();
+  if (document.getElementById('msg-container').children.length === 0) {
+    const cfg = langConfig[currentLang] || langConfig.en;
+    addAIMessage(cfg.welcome, cfg.suggestions);
+  }
+}
+
+function closeChat() {
+  document.getElementById('chat-page').classList.remove('active');
+  document.getElementById('landing-page').classList.remove('hidden-page');
+  document.body.style.overflow = '';
+}
+
+/* Chat Knowledge Engine */
+const knowledgeBase = [
+  {
+    keywords: ['mudra', 'loan', 'credit', 'लोन', 'ऋण', 'मुद्रा', 'कर्ज', 'రుణం', 'கடன்'],
+    en: {
+      content: `**Pradhan Mantri MUDRA Yojana (PMMY) Overview:**\n\n1. **Shishu**: Loans up to ₹50,000 (Seed capital for micro startups)\n2. **Kishore**: Loans from ₹50,000 to ₹5,00,000 (Machinery & equipment purchase)\n3. **Tarun**: Loans from ₹5,00,000 to ₹10,00,000 (Enterprise scaling)\n\n**Key Benefits:**\n- **Zero Collateral**: No property mortgage needed for Shishu & Kishore categories.\n- **Interest Rates**: Typically 8.5% to 11.5% per annum.\n- **Repayment Period**: Up to 5 years.\n\n**Required Documents:** Aadhaar Card, PAN Card, Business Premises Proof, Bank Statement (last 6 months), and Quotation for machinery to be purchased.`,
+      suggestions: ['How to apply for MUDRA online?', 'PMEGP Subsidy Scheme', 'UDYAM Registration']
+    },
+    hi: {
+      content: `**प्रधानमंत्री मुद्रा (MUDRA) योजना की पूरी जानकारी:**\n\n1. **शिशु लोन**: ₹50,000 तक (छोटे व नए व्यवसाय शुरू करने हेतु)\n2. **किशोर लोन**: ₹50,000 से ₹5 लाख तक (मशीनरी व कच्चा माल खरीदने हेतु)\n3. **तरुण लोन**: ₹5 लाख से ₹10 लाख तक (व्यापार के विस्तार हेतु)\n\n**योजना के मुख्य लाभ:**\n- **बिना किसी गारंटी (Collateral-Free)**: किसी ज़मीन या मकान के कागज़ात गिरवी रखने की आवश्यकता नहीं।\n- **ब्याज दर**: 8.5% से 11.5% वार्षिक।\n- **आवश्यक दस्तावेज़**: आधार कार्ड, पैन कार्ड, बैंक खाता विवरण (6 महीने), और मशीनरी का कोटेशन।`,
+      suggestions: ['मुद्रा लोन के लिए ऑनलाइन आवेदन', 'PMEGP योजना में सब्सिडी', 'उद्यम रजिस्ट्रेशन']
+    }
+  },
+  {
+    keywords: ['udyam', 'msme', 'registration', 'उद्यम', 'पंजीकरण', 'रजिस्ट्रेशन', 'பதிவு'],
+    en: {
+      content: `**UDYAM MSME Registration Guide:**\n\n- **Official Portal**: udyamregistration.gov.in (100% Free & Paperless)\n- **Prerequisites**: Aadhaar Card, PAN Card, and active mobile linked to Aadhaar.\n\n**Top MSME Benefits:**\n- Priority Sector Lending from commercial banks at discounted interest.\n- 45-day legal payment protection under MSMED Act.\n- Exemption on tender fee and Earnest Money Deposit (EMD).\n- Direct access to Central & State credit guarantee schemes.`,
+      suggestions: ['How to select NIC code?', 'Apply for MUDRA with UDYAM', 'GST Registration process']
+    },
+    hi: {
+      content: `**उद्यम (UDYAM) रजिस्ट्रेशन गाइड:**\n\n- **आधिकारिक वेबसाइट**: udyamregistration.gov.in (पूरी तरह निःशुल्क एवं ऑनलाइन)\n- **ज़रूरी दस्तावेज़**: आधार कार्ड, पैन कार्ड और आधार से लिंक मोबाइल नंबर।\n\n**उद्यम प्रमाणपत्र के मुख्य लाभ:**\n- बैंकों से कम ब्याज दर पर प्राथमिकता ऋण।\n- यदि खरीदार 45 दिनों में भुगतान न करे तो कानूनी सुरक्षा।\n- सरकारी टेंडरों में शुल्क की छूट।`,
+      suggestions: ['बिना पैन कार्ड के रजिस्ट्रेशन', 'GST के नियम', 'मुद्रा लोन सहायता']
+    }
+  },
+  {
+    keywords: ['fssai', 'food', 'खाद्य', 'फ़ूड', 'लाइसेंस', 'भोजन'],
+    en: {
+      content: `**FSSAI Food Safety Licensing Framework:**\n\n1. **Basic Registration (₹100/year)**: For small petty food units with annual turnover under ₹12 Lakhs.\n2. **State License (₹2,000 - ₹5,000/year)**: For processing units with turnover between ₹12 Lakhs and ₹20 Crores.\n\n**Required Documents**: Identity & address proof, premises rent/ownership agreement, layout plan, and NABL potable water test report.`,
+      suggestions: ['Water testing for FSSAI', 'Packaging & Labeling rules']
+    },
+    hi: {
+      content: `**FSSAI फ़ूड लाइसेंस नियम:**\n\n1. **बेसिक रजिस्ट्रेशन (₹100 प्रति वर्ष)**: ₹12 लाख से कम वार्षिक टर्नओवर वाले छोटे व्यवसायियों व दुकानों के लिए।\n2. **स्टेट लाइसेंस (₹2,000 - ₹5,000 प्रति वर्ष)**: ₹12 लाख से ₹20 करोड़ तक के प्रोसेसिंग यूनिट व रेस्टोरेंट के लिए।\n\n**दस्तावेज़**: आधार, रेंट एग्रीमेंट, NABL लैब से पानी की जांच रिपोर्ट और उपकरण सूची।`,
+      suggestions: ['पानी की जांच कैसे करवाएं?', 'पैकेजिंग के नियम']
+    }
+  }
+];
+
+let isTyping = false;
+
+function formatContent(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-slate-900 font-bold">$1</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+function addAIMessage(content, suggestions) {
+  const container = document.getElementById('msg-container');
+  const wrapper = document.createElement('div');
+  wrapper.className = 'chat-msg ai p-4';
+
+  const typingDiv = document.createElement('div');
+  typingDiv.className = 'flex items-center gap-1.5 py-1 text-blue-600';
+  typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+  wrapper.appendChild(typingDiv);
+  container.appendChild(wrapper);
+  scrollChat();
+
+  setTimeout(() => {
+    wrapper.innerHTML = `<div class="text-xs sm:text-sm leading-relaxed text-slate-700">${formatContent(content)}</div>`;
+    if (suggestions && suggestions.length > 0) {
+      const sugDiv = document.createElement('div');
+      sugDiv.className = 'flex flex-wrap gap-1.5 mt-3 pt-2 border-t border-slate-100';
+      suggestions.forEach(s => {
+        const btn = document.createElement('button');
+        btn.className = 'quick-chip text-xs';
+        btn.textContent = s;
+        btn.onclick = () => sendQuick(s);
+        sugDiv.appendChild(btn);
+      });
+      wrapper.appendChild(sugDiv);
+    }
+    isTyping = false;
+    scrollChat();
+  }, 400);
+}
+
+function addUserMessage(text) {
+  const container = document.getElementById('msg-container');
+  const div = document.createElement('div');
+  div.className = 'chat-msg user p-3.5 px-4';
+  div.innerHTML = `<div class="text-xs sm:text-sm leading-relaxed text-white">${text.replace(/</g, '&lt;')}</div>`;
+  container.appendChild(div);
+  scrollChat();
+}
+
+function scrollChat() {
+  const el = document.getElementById('chat-messages');
+  setTimeout(() => el.scrollTop = el.scrollHeight, 40);
+}
+
+function findResponse(input) {
+  const lower = input.toLowerCase();
+  let bestMatch = null;
+  let bestScore = 0;
+
+  for (const item of knowledgeBase) {
+    let score = 0;
+    for (const kw of item.keywords) {
+      if (lower.includes(kw.toLowerCase())) {
+        score += kw.length;
+      }
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = item;
+    }
+  }
+
+  const isHindi = currentLang === 'hi' || /[\u0900-\u097F]/.test(input);
+
+  if (bestScore >= 2 && bestMatch) {
+    if (isHindi && bestMatch.hi) return bestMatch.hi;
+    return bestMatch.en || bestMatch.hi;
+  }
+
+  if (isHindi) {
+    return {
+      content: `आपके प्रश्न के लिए धन्यवाद। कृपया मुझे अपने व्यवसाय के बारे में बताएं:\n- आपका व्यवसाय किस क्षेत्र में है (जैसे: कृषि, डेयरी, मैन्युफैक्चरिंग)?\n- आपको किस सहायता की आवश्यकता है (लोन, रजिस्ट्रेशन, या सरकारी सब्सिडी)?`,
+      suggestions: ['मुद्रा लोन की जानकारी', 'उद्यम रजिस्ट्रेशन']
+    };
+  }
+
+  return {
+    content: `Thank you for asking. To assist you accurately:\n- What type of business are you starting or running (e.g. Food, Retail, Dairy)?\n- What is your primary requirement (MUDRA Loan, UDYAM MSME, FSSAI License)?`,
+    suggestions: ['How to get MUDRA loan?', 'UDYAM MSME registration']
+  };
+}
+
+function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text || isTyping) return;
+
+  addUserMessage(text);
+  input.value = '';
+  isTyping = true;
+
+  const response = findResponse(text);
+  addAIMessage(response.content, response.suggestions);
+}
+
+function sendQuick(text) {
+  if (isTyping) return;
+  addUserMessage(text);
+  isTyping = true;
+  const response = findResponse(text);
+  addAIMessage(response.content, response.suggestions);
+}
+
+function handleInputKey(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function clearChat() {
+  document.getElementById('msg-container').innerHTML = '';
+  isTyping = false;
+  const cfg = langConfig[currentLang] || langConfig.en;
+  addAIMessage(cfg.welcome, cfg.suggestions);
+}
+</script>
+</body>
+</html>
