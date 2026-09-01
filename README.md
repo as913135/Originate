@@ -140,7 +140,7 @@ The platform provides industry-specific guidance, government scheme discovery, c
 
 ## 👥 Team
 
-Team Name: ORIGINATE
+Team Name: HUSTLE IRL
 
 NIT Delhi Hackathon 2026
 
